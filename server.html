@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/css/js10.css"> -->
+<style>
+
+
+*{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+h1{
+    background-color: #081b31;
+    color: white;
+    height: 5rem;
+    line-height: 5rem;
+}
+.choices{
+ 
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 5rem;
+}
+.choice {
+    height: 100px;
+    width:100px; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.choice:hover{
+    background-color: #081b31;
+    cursor: pointer;
+}
+img{
+    height: 90px;
+    width: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.score-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    gap: 5rem;
+    
+}
+
+#user-score, #comp-score {
+    font-size: 4rem;
+   
+}
+
+.msgcontainer {
+    margin-top: 5rem;
+}
+
+#msg {
+    background-color: #081b31;
+    color: white;
+    display: inline;
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+.new{
+    height: 100px;
+}
+.hide1, .hide2, .hide3 , .hide4{
+    display: none;
+}
+
+button{
+    height: 50px;
+    width: 160px;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 1rem;
+    background-color: lime;
+    color: blueviolet;
+    border: 3px solid red;
+    box-shadow: 0 0 1rem rgb(138, 5, 27);
+   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+button:hover{
+    opacity: 50%;
+    cursor: pointer;
+}
+
+
+
+
+
+</style>
+</head>
+<body>
+    <h1>Rock paper scissors</h1>
+    <div class="comChoicc1 hide1">
+        <img src="/images/paper.png" alt="">
+        <h2>Rocky's AI : Paper</h2>
+
+    </div>
+
+    <div class="comChoicc2 hide2">
+        <img src="/images/rock.png" alt="">
+        <h2>Rocky's AI : Rock</h2>
+        
+
+    </div>
+    <div class="comChoicc3 hide3">
+        <img src="/images/scissors.png" alt="">
+        <h2>Rocky's AI : Scissor</h2>
+
+    </div>
+    <div class="choices">
+        <div class="choice" id="paper">
+            <img src="/images/paper.png" alt="">
+
+        </div>
+        <div class="choice" id="rock">
+            <img src="/images/rock.png" alt="">
+        </div>
+        <div class="choice" id="scissors">
+            <img src="/images/scissors.png" alt="">
+        </div>
+    </div>
+    <div class="score-board">
+        <div class="score">
+            <p id="user-score">0</p>
+            <p>You</p>
+        </div>
+        <div class="reset">
+            <button> Reset </button>
+        </div>
+        <div class="score">
+            <p id="comp-score">0</p>
+            <p>Computer</p>
+
+        </div>
+
+    </div>
+    <div class="new hide4">
+
+    </div>
+
+    <div class="msg-container">
+        <p id="msg">play your move</p>
+    </div>
+    <!-- <script src="/JavaScript/lec10.js"></script> -->
+    <script>
+
+// let userScore=0;
+// let compScore=0;
+
+let countYou =0;
+let countComp =0;
+
+
+
+let forspace = document.querySelector(".new")
+
+let btn = document.querySelector("button");
+
+let comChoicc1 = document.querySelector(".comChoicc1");
+let comChoicc2 = document.querySelector(".comChoicc2");
+let comChoicc3 = document.querySelector(".comChoicc3");
+
+let userScorePara = document.querySelector("#user-score");
+let compScorePara = document.querySelector("#comp-score");
+
+const choices =document.querySelectorAll(".choice");
+let msg = document.querySelector("#msg");
+
+
+const genCompChoice =() => {
+    //rock paper scissor
+    const options = ["rock", "paper", "scissors"];
+    const randIdx = Math.floor(Math.random() * 3);
+    return options[randIdx];
+
+};
+
+const drawGame = () =>{
+    console.log("game was draw, try again!");
+    msg.innerText ="Draw";
+    msg.style.background = "blue";
+}
+
+const showWinner=(userWin, userChoice , compChoice) => {
+    if(userWin){
+        console.log("you win!");
+        msg.innerText =`you win! your choice ${userChoice} beats ${compChoice}`;
+        msg.style.background = "green";
+        countYou++;
+        userScorePara.innerText = countYou ;
+
+    }else{
+        console.log("you lose!");
+        msg.innerText = `you lose! ${compChoice} beats your choice ${userChoice}`;
+        msg.style.background = "red";
+        countComp++;
+        compScorePara.innerText= countComp;
+
+    }
+};
+
+
+const playGame = (userChoice) => {
+    console.log("user choice = ", userChoice);
+    //generate computer choices
+    const compChoice = genCompChoice();
+    
+    if(compChoice === "rock"){comChoicc2.classList.remove("hide2");}
+    if(compChoice === "paper"){comChoicc1.classList.remove("hide1");}
+    if(compChoice === "scissors"){comChoicc3.classList.remove("hide3");}
+
+    console.log("computer choice = ", compChoice);
+    
+    if(userChoice === compChoice){
+        drawGame();
+    }else{
+        let userWin = true;
+       
+        if(userChoice === "rock"){
+             //scissors, paper
+             userWin = compChoice === "paper" ? false : true;
+        } else if (userChoice === "paper"){
+            //rock, scissor
+            userWin = compChoice === "scissors" ? false : true;
+        } else {
+            //rock, paper
+           userWin = compChoice === "rock" ? false : true;
+        }
+        showWinner(userWin, userChoice, compChoice);
+    } 
+
+};
+
+choices.forEach((choice) => {
+    choice.addEventListener("click", ()=>{
+        const userChoice = choice.getAttribute("id");
+        comChoicc2.classList.add("hide2");
+        comChoicc1.classList.add("hide1");
+        comChoicc3.classList.add("hide3");
+        forspace.classList.add("hide4");
+        
+        playGame(userChoice);
+
+    });
+});
+
+btn.addEventListener("click", ()=> {
+    comChoicc2.classList.add("hide2");
+    comChoicc1.classList.add("hide1");
+    comChoicc3.classList.add("hide3");
+    forspace.classList.remove("hide4");
+    
+    userScorePara.innerText = "0";
+    compScorePara.innerText = "0";
+    msg.innerText= "play your move";
+    msg.style.backgroundColor = "#081b31";
+
+
+});
+
+
+    </script>
+</body>
+</html>
